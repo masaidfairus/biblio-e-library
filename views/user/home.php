@@ -172,7 +172,7 @@ $name = $_SESSION['name']
                         echo "<h3>" . $category['name'] . "</h3>";
                         $book_query = mysqli_query($conn, "SELECT * FROM books WHERE category_id = '" . $category['id'] . "'");
                         if (mysqli_num_rows($book_query) > 0) { ?>
-                            <div class="row mb-4">
+                            <div class="row mb-">
                                 <?php while ($book = mysqli_fetch_assoc($book_query)) { ?>
                                     <div class="col-6 col-md-3 col-lg-2 mb-3">
                                         <div class="card h-100" style="cursor: pointer;" onclick="detailBook(<?= $book['id'] ?>)">

@@ -155,30 +155,63 @@ if (isset($_GET['id'])) {
                     </div>
                 </div>
                 <div class="row">
-                    <h2>Review of the book</h2>
-                    <form action="user_controller.php" method="POST">
-                        
+                    <h2 class="mb-3">Leave us a review</h2>
+                    <form action="user_controller.php" method="POST" class="mb-5">
+                        <input type="hidden" name="action" value="add_review">
+
+                        <input type="hidden" name="user_id" value="<?= $_SESSION['name'] ?>">
+
+                        <input type="hidden" name="book_id" value="<?= $book_id ?>">
+
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="floatingTitle" placeholder="Title"
+                                value="<?= $title ?>" disabled>
+                            <label for="floatingTitle">Book Title</label>
+                        </div>
+
+
+                        <div class="form-floating mb-3">
+                            <input type="number" name="rating" id="rating" class="form-control" min="1" max="5" required
+                                id="floatingRating" placeholder="Title">
+                            <label for="floatingRating">Rate this book (1 - 5)</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <textarea name="comment" id="comment" class="form-control" rows="4" style="height: 200px"
+                                placeholder="Write your review here..." required id="floatingComment"></textarea>
+                            <label for="floatingComment">Comment</label>
+                        </div>
+
+                        <button type="submit" class="button">Submit Review</button>
                     </form>
+
+                    <h2 class="mb-3">Review of the book</h2>
                     <?php
-                    // Assume $conn is your database connection
                     
-                    // Fetch reviews from the database
-                    $query = "SELECT * FROM reviews WHERE book_id = ?";
+                    // Get the book_id from the URL parameter (GET request)
+                    $book_id = $_GET['id'];
+
+                    // Prepare the query to fetch reviews along with user names
+                    $query = "  SELECT reviews.comment, reviews.rating, users.name 
+                                FROM reviews
+                                INNER JOIN users ON reviews.user_id = users.id
+                                WHERE reviews.book_id = ?
+                            ";
+
+                    // Prepare and execute the query
                     $stmt = $conn->prepare($query);
-                    $book_id = $_GET['id']; // Assuming book_id is passed via GET
-                    $stmt->bind_param('i', $book_id);
+                    $stmt->bind_param('i', $book_id); // Bind the book_id as an integer
                     $stmt->execute();
                     $result = $stmt->get_result();
 
                     // Check if there are any reviews
                     if ($result->num_rows > 0) {
                         echo '<div class="review-section">';
-                        echo '<h3>Reviews</h3>';
 
                         // Loop through and display each review
                         while ($row = $result->fetch_assoc()) {
                             echo '<div class="review">';
-                            echo '<h4>' . htmlspecialchars($row['user_name']) . '</h4>'; // User's name
+                            echo '<h4>' . htmlspecialchars($row['name']) . '</h4>'; // User's name
                             echo '<p>' . htmlspecialchars($row['comment']) . '</p>';    // Review comment
                             echo '<small>Rating: ' . htmlspecialchars($row['rating']) . '/5</small>'; // Rating
                             echo '</div><hr>';
@@ -190,6 +223,7 @@ if (isset($_GET['id'])) {
                         echo '<p>No reviews yet. Be the first to leave a review!</p>';
                     }
                     ?>
+
                 </div>
             </div>
         </div>
