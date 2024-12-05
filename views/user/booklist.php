@@ -106,25 +106,25 @@ $result = mysqli_query($conn, $query);
                 <?php
                 // Cek apakah ada buku yang sedang dipinjam
                 if (mysqli_num_rows($result) > 0): ?>
-                    <h1 class="mb-4">Buku yang Sedang Dipinjam</h1>
+                    <h1 class="mb-4">Books on Borrow</h1>
                     <div class="book-list">
                         <?php while ($loan = mysqli_fetch_assoc($result)): ?>
                             <div class="book-item d-flex flex-column">
                                 <img src="../admin/<?= $loan['cover_image'] ?>" alt="Cover <?= $loan['title'] ?>" class="book-cover">
                                 <h3><?= $loan['title'] ?></h3>
-                                <p class="mb-auto">Penulis: <?= $loan['author'] ?></p>
+                                <p class="mb-auto">Author: <?= $loan['author'] ?></p>
                                 <form method="POST" action="user_controller.php" class="mt-4">
                                     <input type="hidden" name="loan_id" value="<?= $loan['loan_id'] ?>">
                                     <input type="hidden" name="book_id" value="<?= $loan['book_id'] ?>">
                                     <button type="submit" name="return" class="button bg-danger" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">Kembalikan Buku</button>
+                                    data-bs-target="#exampleModal">Return the book</button>
                                 </form>
                             </div>
                         <?php endwhile; ?>
                     </div>
                 <?php else: ?>
-                    <h1>Tidak Ada Buku yang Sedang Dipinjam</h1>
-                    <p>Anda belum meminjam buku. Silakan pinjam buku dari <a href="home.php">daftar buku tersedia</a>.</p>
+                    <h1>No book currently borrowed</h1>
+                    <p>You haven't borrow a book yet, please borrow at <a href="home.php">available book here</a>.</p>
                 <?php endif; ?>
                     
             </div>

@@ -147,10 +147,10 @@ if (isset($_GET['id'])) {
                         <?php if ($status == 'available'): ?>
                             <form action="" class="w-100">
                                 <button type="button" name="loan" class="button w-100" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">Pinjam Buku</button>
+                                    data-bs-target="#exampleModal">Borrow Book</button>
                             </form>
                         <?php else: ?>
-                            <button class="button button-secondary w-100" disabled>Tidak Tersedia</button>
+                            <button class="button button-secondary w-100" disabled>Book Not Available</button>
                         <?php endif; ?>
                     </div>
                 </div>
